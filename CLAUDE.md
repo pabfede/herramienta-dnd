@@ -111,7 +111,7 @@ Tasks:
 **Update:** `PATCH /api/campaigns/{id}` → update campaign
 **Delete:** `DELETE /api/campaigns/{id}` → delete campaign
 
-Similar for `/api/npcs`, `/api/locations`, `/api/factions`.
+Similar for `/api/campaigns/{id}/npcs`, `/api/campaigns/{id}/locations`, `/api/campaigns/{id}/factions`.
 
 Responses: JSON, `{id, name, description, createdAt, updatedAt, ...}`
 
@@ -121,7 +121,7 @@ Responses: JSON, `{id, name, description, createdAt, updatedAt, ...}`
 # Backend
 cd backend
 uv sync              # Install dependencies
-uv run uvicorn main:app --reload  # Run server
+uv run uvicorn app.main:app --reload  # Run server
 uv run pytest        # Run tests
 uv run ruff check .  # Lint
 

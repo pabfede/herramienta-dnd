@@ -5,6 +5,7 @@ __pycache__/
 .Python
 env/
 venv/
+.venv/
 ENV/
 *.egg-info/
 dist/
@@ -25,6 +26,7 @@ dist/
 *.db
 *.sqlite
 *.sqlite3
+backend/data/
 
 .ruff_cache/
 .pytest_cache/
