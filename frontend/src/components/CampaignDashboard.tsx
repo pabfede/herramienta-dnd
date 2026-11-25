@@ -1,0 +1,58 @@
+import { useQuery } from "@tanstack/react-query";
+import { request } from "@/api/client";
+import type { CampaignRead } from "@/api/client";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { EntityList } from "@/components/EntityList";
+
+interface CampaignDashboardProps {
+  campaignId: string;
+  onChangeCampaign: () => void;
+}
+
+export function CampaignDashboard({ campaignId, onChangeCampaign }: CampaignDashboardProps) {
+  const campaign = useQuery({
+    queryKey: ["campaigns", campaignId],
+    queryFn: () => request<CampaignRead>(`/api/campaigns/${campaignId}`),
+  });
+
+  return (
+    <div className="mx-auto max-w-3xl space-y-6 p-4">
+      <div className="flex items-center justify-between gap-2">
+        <h1 className="text-2xl font-bold">
+          {campaign.data?.name ?? "Loading..."}
+        </h1>
+        <Button variant="outline" onClick={onChangeCampaign}>
+          Change campaign
+        </Button>
+      </div>
+
+      <Tabs defaultValue="overview">
+        <TabsList className="flex-wrap">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="npcs">NPCs</TabsTrigger>
+          <TabsTrigger value="locations">Locations</TabsTrigger>
+          <TabsTrigger value="factions">Factions</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview">
+          <p className="text-muted-foreground">
+            {campaign.data?.description ?? "No description yet."}
+          </p>
+        </TabsContent>
+
+        <TabsContent value="npcs">
+          <EntityList campaignId={campaignId} kind="npcs" label="NPCs" />
+        </TabsContent>
+
+        <TabsContent value="locations">
+          <EntityList campaignId={campaignId} kind="locations" label="Locations" />
+        </TabsContent>
+
+        <TabsContent value="factions">
+          <EntityList campaignId={campaignId} kind="factions" label="Factions" />
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
