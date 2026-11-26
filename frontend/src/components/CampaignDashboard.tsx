@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EntityList } from "@/components/EntityList";
 import { EncounterPanel } from "@/components/EncounterPanel";
+import { SessionPanel } from "@/components/SessionPanel";
 
 interface CampaignDashboardProps {
   campaignId: string;
@@ -48,6 +49,7 @@ export function CampaignDashboard({ campaignId, onChangeCampaign }: CampaignDash
           <TabsTrigger value="locations">Locations</TabsTrigger>
           <TabsTrigger value="factions">Factions</TabsTrigger>
           <TabsTrigger value="encounters">Encounters</TabsTrigger>
+          <TabsTrigger value="sessions">Sessions</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview">
@@ -70,6 +72,10 @@ export function CampaignDashboard({ campaignId, onChangeCampaign }: CampaignDash
 
         <TabsContent value="encounters">
           <EncounterPanel campaignId={campaignId} />
+        </TabsContent>
+
+        <TabsContent value="sessions">
+          <SessionPanel campaignId={campaignId} />
         </TabsContent>
       </Tabs>
     </div>

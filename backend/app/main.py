@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
 from app.errors import register_exception_handlers
-from app.routers import campaigns, encounters, factions, locations, npcs
+from app.routers import campaigns, encounters, factions, links, locations, npcs, sessions
 
 
 def create_app() -> FastAPI:
@@ -25,6 +25,8 @@ def create_app() -> FastAPI:
     app.include_router(locations.router)
     app.include_router(factions.router)
     app.include_router(encounters.router)
+    app.include_router(sessions.router)
+    app.include_router(links.router)
 
     return app
 

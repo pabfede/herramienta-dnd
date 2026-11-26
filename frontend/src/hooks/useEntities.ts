@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { EntityCreate, EntityKind, EntityRead } from "@/api/client";
+import type { EntityCreate, EntityKind, EntityRead, EntityUpdate } from "@/api/client";
 import { entityPath, request } from "@/api/client";
 
 export function useEntities(campaignId: string, kind: EntityKind) {
@@ -20,11 +20,20 @@ export function useEntities(campaignId: string, kind: EntityKind) {
     onSuccess: () => queryClient.invalidateQueries({ queryKey }),
   });
 
+  const update = useMutation({
+    mutationFn: ({ id, ...body }: EntityUpdate & { id: string }) =>
+      request<EntityRead>(entityPath(campaignId, kind, id), {
+        method: "PATCH",
+        body: JSON.stringify(body),
+      }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey }),
+  });
+
   const remove = useMutation({
     mutationFn: (entityId: string) =>
       request<void>(entityPath(campaignId, kind, entityId), { method: "DELETE" }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey }),
   });
 
-  return { list, create, remove };
+  return { list, create, update, remove };
 }

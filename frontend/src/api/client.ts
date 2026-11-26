@@ -4,18 +4,40 @@ export type CampaignRead = components["schemas"]["CampaignRead"];
 export type CampaignCreate = components["schemas"]["CampaignCreate"];
 export type NpcRead = components["schemas"]["NpcRead"];
 export type NpcCreate = components["schemas"]["NpcCreate"];
+export type NpcUpdate = components["schemas"]["NpcUpdate"];
 export type LocationRead = components["schemas"]["LocationRead"];
 export type LocationCreate = components["schemas"]["LocationCreate"];
+export type LocationUpdate = components["schemas"]["LocationUpdate"];
 export type FactionRead = components["schemas"]["FactionRead"];
 export type FactionCreate = components["schemas"]["FactionCreate"];
+export type FactionUpdate = components["schemas"]["FactionUpdate"];
 export type EncounterRead = components["schemas"]["EncounterRead"];
 export type EncounterUpdate = components["schemas"]["EncounterUpdate"];
 export type EncounterGenerate = components["schemas"]["EncounterGenerate"];
 export type Combatant = components["schemas"]["Combatant"];
+export type SessionRead = components["schemas"]["SessionRead"];
+export type SessionCreate = components["schemas"]["SessionCreate"];
+export type SessionUpdate = components["schemas"]["SessionUpdate"];
+export type LinkRead = components["schemas"]["LinkRead"];
+export type LinkCreate = components["schemas"]["LinkCreate"];
 
 export type EntityKind = "npcs" | "locations" | "factions";
 export type EntityRead = NpcRead | LocationRead | FactionRead;
 export type EntityCreate = NpcCreate | LocationCreate | FactionCreate;
+export type EntityUpdate = NpcUpdate | LocationUpdate | FactionUpdate;
+
+// Links store kind as the singular entity name; this maps the plural URL kind to it.
+export type LinkKind = "npc" | "location" | "faction";
+
+const LINK_KIND_BY_ENTITY_KIND: Record<EntityKind, LinkKind> = {
+  npcs: "npc",
+  locations: "location",
+  factions: "faction",
+};
+
+export function toLinkKind(kind: EntityKind): LinkKind {
+  return LINK_KIND_BY_ENTITY_KIND[kind];
+}
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000";
 

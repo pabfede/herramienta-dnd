@@ -33,3 +33,10 @@ def delete_entity(session: Session, model: type[ModelT], entity_id: str) -> None
     if entity is None:
         raise NotFoundError(model.__name__, entity_id)
     repo.delete(entity)
+
+    # lazy import: avoids a circular import with link_service, which imports this module
+    from app.services import link_service
+
+    kind = link_service.MODEL_KINDS.get(model)
+    if kind is not None:
+        link_service.delete_links_for(session, kind, entity_id)

@@ -79,6 +79,30 @@ export interface paths {
     /** Update Encounter */
     patch: operations["update_encounter_api_campaigns__campaign_id__encounters__encounter_id__patch"];
   };
+  "/api/campaigns/{campaign_id}/sessions": {
+    /** List Sessions */
+    get: operations["list_sessions_api_campaigns__campaign_id__sessions_get"];
+    /** Create Session */
+    post: operations["create_session_api_campaigns__campaign_id__sessions_post"];
+  };
+  "/api/campaigns/{campaign_id}/sessions/{session_id}": {
+    /** Get Session */
+    get: operations["get_session_api_campaigns__campaign_id__sessions__session_id__get"];
+    /** Delete Session */
+    delete: operations["delete_session_api_campaigns__campaign_id__sessions__session_id__delete"];
+    /** Update Session */
+    patch: operations["update_session_api_campaigns__campaign_id__sessions__session_id__patch"];
+  };
+  "/api/campaigns/{campaign_id}/links": {
+    /** List Links */
+    get: operations["list_links_api_campaigns__campaign_id__links_get"];
+    /** Create Link */
+    post: operations["create_link_api_campaigns__campaign_id__links_post"];
+  };
+  "/api/campaigns/{campaign_id}/links/{link_id}": {
+    /** Delete Link */
+    delete: operations["delete_link_api_campaigns__campaign_id__links__link_id__delete"];
+  };
 }
 
 export type webhooks = Record<string, never>;
@@ -277,6 +301,39 @@ export interface components {
       /** Detail */
       detail?: components["schemas"]["ValidationError"][];
     };
+    /** LinkCreate */
+    LinkCreate: {
+      /** Kinda */
+      kindA: string;
+      /** Ida */
+      idA: string;
+      /** Kindb */
+      kindB: string;
+      /** Idb */
+      idB: string;
+      /** Relation */
+      relation?: string | null;
+    };
+    /** LinkRead */
+    LinkRead: {
+      /** Id */
+      id: string;
+      /** Kinda */
+      kindA: string;
+      /** Ida */
+      idA: string;
+      /** Kindb */
+      kindB: string;
+      /** Idb */
+      idB: string;
+      /** Relation */
+      relation?: string | null;
+      /**
+       * Createdat
+       * Format: date-time
+       */
+      createdAt: string;
+    };
     /** LocationCreate */
     LocationCreate: {
       /** Name */
@@ -378,6 +435,69 @@ export interface components {
       customFields?: {
         [key: string]: unknown;
       } | null;
+    };
+    /** SessionCreate */
+    SessionCreate: {
+      /** Name */
+      name: string;
+      /** Description */
+      description?: string | null;
+      /**
+       * Customfields
+       * @default {}
+       */
+      customFields?: {
+        [key: string]: unknown;
+      };
+      /** Sessiondate */
+      sessionDate?: string | null;
+      /** Notes */
+      notes?: string | null;
+    };
+    /** SessionRead */
+    SessionRead: {
+      /** Name */
+      name: string;
+      /** Description */
+      description?: string | null;
+      /**
+       * Customfields
+       * @default {}
+       */
+      customFields?: {
+        [key: string]: unknown;
+      };
+      /** Sessiondate */
+      sessionDate?: string | null;
+      /** Notes */
+      notes?: string | null;
+      /** Id */
+      id: string;
+      /**
+       * Createdat
+       * Format: date-time
+       */
+      createdAt: string;
+      /**
+       * Updatedat
+       * Format: date-time
+       */
+      updatedAt: string;
+    };
+    /** SessionUpdate */
+    SessionUpdate: {
+      /** Name */
+      name?: string | null;
+      /** Description */
+      description?: string | null;
+      /** Customfields */
+      customFields?: {
+        [key: string]: unknown;
+      } | null;
+      /** Sessiondate */
+      sessionDate?: string | null;
+      /** Notes */
+      notes?: string | null;
     };
     /** ValidationError */
     ValidationError: {
@@ -1010,6 +1130,201 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["EncounterRead"];
         };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** List Sessions */
+  list_sessions_api_campaigns__campaign_id__sessions_get: {
+    parameters: {
+      path: {
+        campaign_id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["SessionRead"][];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Create Session */
+  create_session_api_campaigns__campaign_id__sessions_post: {
+    parameters: {
+      path: {
+        campaign_id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SessionCreate"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        content: {
+          "application/json": components["schemas"]["SessionRead"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Session */
+  get_session_api_campaigns__campaign_id__sessions__session_id__get: {
+    parameters: {
+      path: {
+        session_id: string;
+        campaign_id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["SessionRead"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Delete Session */
+  delete_session_api_campaigns__campaign_id__sessions__session_id__delete: {
+    parameters: {
+      path: {
+        session_id: string;
+        campaign_id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Update Session */
+  update_session_api_campaigns__campaign_id__sessions__session_id__patch: {
+    parameters: {
+      path: {
+        session_id: string;
+        campaign_id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SessionUpdate"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["SessionRead"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** List Links */
+  list_links_api_campaigns__campaign_id__links_get: {
+    parameters: {
+      query: {
+        entity_kind: string;
+        entity_id: string;
+      };
+      path: {
+        campaign_id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LinkRead"][];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Create Link */
+  create_link_api_campaigns__campaign_id__links_post: {
+    parameters: {
+      path: {
+        campaign_id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LinkCreate"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        content: {
+          "application/json": components["schemas"]["LinkRead"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Delete Link */
+  delete_link_api_campaigns__campaign_id__links__link_id__delete: {
+    parameters: {
+      path: {
+        link_id: string;
+        campaign_id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
       };
       /** @description Validation Error */
       422: {
