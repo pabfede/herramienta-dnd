@@ -4,6 +4,7 @@ import type { CampaignRead } from "@/api/client";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EntityList } from "@/components/EntityList";
+import { EncounterPanel } from "@/components/EncounterPanel";
 
 interface CampaignDashboardProps {
   campaignId: string;
@@ -46,6 +47,7 @@ export function CampaignDashboard({ campaignId, onChangeCampaign }: CampaignDash
           <TabsTrigger value="npcs">NPCs</TabsTrigger>
           <TabsTrigger value="locations">Locations</TabsTrigger>
           <TabsTrigger value="factions">Factions</TabsTrigger>
+          <TabsTrigger value="encounters">Encounters</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview">
@@ -64,6 +66,10 @@ export function CampaignDashboard({ campaignId, onChangeCampaign }: CampaignDash
 
         <TabsContent value="factions">
           <EntityList campaignId={campaignId} kind="factions" label="Factions" />
+        </TabsContent>
+
+        <TabsContent value="encounters">
+          <EncounterPanel campaignId={campaignId} />
         </TabsContent>
       </Tabs>
     </div>

@@ -61,6 +61,24 @@ export interface paths {
     /** Update Faction */
     patch: operations["update_faction_api_campaigns__campaign_id__factions__faction_id__patch"];
   };
+  "/api/campaigns/{campaign_id}/encounters": {
+    /** List Encounters */
+    get: operations["list_encounters_api_campaigns__campaign_id__encounters_get"];
+    /** Create Encounter */
+    post: operations["create_encounter_api_campaigns__campaign_id__encounters_post"];
+  };
+  "/api/campaigns/{campaign_id}/encounters/generate": {
+    /** Generate Encounter */
+    post: operations["generate_encounter_api_campaigns__campaign_id__encounters_generate_post"];
+  };
+  "/api/campaigns/{campaign_id}/encounters/{encounter_id}": {
+    /** Get Encounter */
+    get: operations["get_encounter_api_campaigns__campaign_id__encounters__encounter_id__get"];
+    /** Delete Encounter */
+    delete: operations["delete_encounter_api_campaigns__campaign_id__encounters__encounter_id__delete"];
+    /** Update Encounter */
+    patch: operations["update_encounter_api_campaigns__campaign_id__encounters__encounter_id__patch"];
+  };
 }
 
 export type webhooks = Record<string, never>;
@@ -117,6 +135,91 @@ export interface components {
       customFields?: {
         [key: string]: unknown;
       } | null;
+    };
+    /** Combatant */
+    Combatant: {
+      /** Name */
+      name: string;
+      /** Sourceid */
+      sourceId?: string | null;
+      /** Initiative */
+      initiative?: number | null;
+    };
+    /** EncounterCreate */
+    EncounterCreate: {
+      /** Name */
+      name: string;
+      /** Description */
+      description?: string | null;
+      /**
+       * Customfields
+       * @default {}
+       */
+      customFields?: {
+        [key: string]: unknown;
+      };
+      /**
+       * Combatants
+       * @default []
+       */
+      combatants?: components["schemas"]["Combatant"][];
+      /** Notes */
+      notes?: string | null;
+    };
+    /** EncounterGenerate */
+    EncounterGenerate: {
+      /** Size */
+      size: number;
+      /** Faction */
+      faction?: string | null;
+    };
+    /** EncounterRead */
+    EncounterRead: {
+      /** Name */
+      name: string;
+      /** Description */
+      description?: string | null;
+      /**
+       * Customfields
+       * @default {}
+       */
+      customFields?: {
+        [key: string]: unknown;
+      };
+      /**
+       * Combatants
+       * @default []
+       */
+      combatants?: components["schemas"]["Combatant"][];
+      /** Notes */
+      notes?: string | null;
+      /** Id */
+      id: string;
+      /**
+       * Createdat
+       * Format: date-time
+       */
+      createdAt: string;
+      /**
+       * Updatedat
+       * Format: date-time
+       */
+      updatedAt: string;
+    };
+    /** EncounterUpdate */
+    EncounterUpdate: {
+      /** Name */
+      name?: string | null;
+      /** Description */
+      description?: string | null;
+      /** Customfields */
+      customFields?: {
+        [key: string]: unknown;
+      } | null;
+      /** Combatants */
+      combatants?: components["schemas"]["Combatant"][] | null;
+      /** Notes */
+      notes?: string | null;
     };
     /** FactionCreate */
     FactionCreate: {
@@ -758,6 +861,154 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["FactionRead"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** List Encounters */
+  list_encounters_api_campaigns__campaign_id__encounters_get: {
+    parameters: {
+      path: {
+        campaign_id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["EncounterRead"][];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Create Encounter */
+  create_encounter_api_campaigns__campaign_id__encounters_post: {
+    parameters: {
+      path: {
+        campaign_id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["EncounterCreate"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        content: {
+          "application/json": components["schemas"]["EncounterRead"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Generate Encounter */
+  generate_encounter_api_campaigns__campaign_id__encounters_generate_post: {
+    parameters: {
+      path: {
+        campaign_id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["EncounterGenerate"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        content: {
+          "application/json": components["schemas"]["EncounterRead"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Encounter */
+  get_encounter_api_campaigns__campaign_id__encounters__encounter_id__get: {
+    parameters: {
+      path: {
+        encounter_id: string;
+        campaign_id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["EncounterRead"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Delete Encounter */
+  delete_encounter_api_campaigns__campaign_id__encounters__encounter_id__delete: {
+    parameters: {
+      path: {
+        encounter_id: string;
+        campaign_id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Update Encounter */
+  update_encounter_api_campaigns__campaign_id__encounters__encounter_id__patch: {
+    parameters: {
+      path: {
+        encounter_id: string;
+        campaign_id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["EncounterUpdate"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["EncounterRead"];
         };
       };
       /** @description Validation Error */

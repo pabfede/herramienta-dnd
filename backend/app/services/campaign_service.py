@@ -1,10 +1,7 @@
 import uuid
-from pathlib import Path
 
-from alembic.config import Config
 from sqlalchemy.orm import sessionmaker
 
-from alembic import command
 from app.db import clear_engine_cache, db_path, engine_for, list_campaign_ids
 from app.errors import CampaignNotFoundError
 from app.models.campaign import Campaign
@@ -12,15 +9,7 @@ from app.models.system import System
 from app.repositories.base import BaseRepository
 from app.schemas.campaign import CampaignCreate, CampaignUpdate
 
-_ALEMBIC_INI = Path(__file__).resolve().parents[2] / "alembic.ini"
 _DEFAULT_SYSTEM_NAME = "D&D 5e"
-
-
-def _run_migrations(path: Path) -> None:
-    cfg = Config(str(_ALEMBIC_INI))
-    cfg.set_main_option("script_location", str(_ALEMBIC_INI.parent / "alembic"))
-    cfg.attributes["url"] = f"sqlite:///{path}"
-    command.upgrade(cfg, "head")
 
 
 def list_campaigns() -> list[Campaign]:
@@ -48,7 +37,6 @@ def create_campaign(data: CampaignCreate) -> Campaign:
     campaign_id = str(uuid.uuid4())
     path = db_path(campaign_id)
     try:
-        _run_migrations(path)
         session = sessionmaker(bind=engine_for(campaign_id))()
         try:
             campaign = Campaign(

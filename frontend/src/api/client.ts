@@ -8,6 +8,10 @@ export type LocationRead = components["schemas"]["LocationRead"];
 export type LocationCreate = components["schemas"]["LocationCreate"];
 export type FactionRead = components["schemas"]["FactionRead"];
 export type FactionCreate = components["schemas"]["FactionCreate"];
+export type EncounterRead = components["schemas"]["EncounterRead"];
+export type EncounterUpdate = components["schemas"]["EncounterUpdate"];
+export type EncounterGenerate = components["schemas"]["EncounterGenerate"];
+export type Combatant = components["schemas"]["Combatant"];
 
 export type EntityKind = "npcs" | "locations" | "factions";
 export type EntityRead = NpcRead | LocationRead | FactionRead;

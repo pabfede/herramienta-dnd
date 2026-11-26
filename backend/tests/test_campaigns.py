@@ -36,12 +36,12 @@ def test_unknown_campaign_404(client):
 def test_creation_failure_leaves_no_db_file(client, tmp_path, monkeypatch):
     import pytest
 
-    import app.services.campaign_service as campaign_service
+    import app.db as db
 
     def boom(path):
         raise RuntimeError("migration failed")
 
-    monkeypatch.setattr(campaign_service, "_run_migrations", boom)
+    monkeypatch.setattr(db, "_run_migrations", boom)
     with pytest.raises(RuntimeError):
         client.post("/api/campaigns", json={"name": "Doomed"})
     assert list(tmp_path.glob("*.db")) == []
