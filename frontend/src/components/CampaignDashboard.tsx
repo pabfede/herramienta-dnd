@@ -20,12 +20,25 @@ export function CampaignDashboard({ campaignId, onChangeCampaign }: CampaignDash
     <div className="mx-auto max-w-3xl space-y-6 p-4">
       <div className="flex items-center justify-between gap-2">
         <h1 className="text-2xl font-bold">
-          {campaign.data?.name ?? "Loading..."}
+          {campaign.isError
+            ? "Failed to load campaign."
+            : campaign.data
+              ? campaign.data.name
+              : "Loading..."}
         </h1>
         <Button variant="outline" onClick={onChangeCampaign}>
           Change campaign
         </Button>
       </div>
+
+      {campaign.isError && (
+        <div className="flex items-center gap-2">
+          <p className="text-destructive">{campaign.error.message}</p>
+          <Button variant="outline" size="sm" onClick={() => campaign.refetch()}>
+            Retry
+          </Button>
+        </div>
+      )}
 
       <Tabs defaultValue="overview">
         <TabsList className="flex-wrap">

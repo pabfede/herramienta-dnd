@@ -22,6 +22,7 @@ export function CampaignPicker({ onSelect }: CampaignPickerProps) {
 
       {list.isLoading && <p className="text-muted-foreground">Loading campaigns...</p>}
       {list.isError && <p className="text-destructive">Failed to load campaigns.</p>}
+      {remove.isError && <p className="text-destructive">Failed to delete: {remove.error.message}</p>}
 
       <div className="grid gap-3 sm:grid-cols-2">
         {list.data?.map((campaign) => (

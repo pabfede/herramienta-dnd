@@ -23,6 +23,7 @@ export function EntityList({ campaignId, kind, label }: EntityListProps) {
 
       {list.isLoading && <p className="text-muted-foreground">Loading {label.toLowerCase()}...</p>}
       {list.isError && <p className="text-destructive">Failed to load {label.toLowerCase()}.</p>}
+      {remove.isError && <p className="text-destructive">Failed to delete: {remove.error.message}</p>}
 
       <div className="space-y-2">
         {list.data?.map((entity) => (
