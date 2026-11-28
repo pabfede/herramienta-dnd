@@ -87,3 +87,34 @@ export function entityPath(campaignId: string, kind: EntityKind, entityId?: stri
   const base = `/api/campaigns/${campaignId}/${kind}`;
   return entityId ? `${base}/${entityId}` : base;
 }
+
+export async function exportCampaign(campaignId: string): Promise<void> {
+  const res = await fetch(`${BASE_URL}/api/campaigns/${campaignId}/export`);
+  if (!res.ok) {
+    throw new ApiError(res.status, await extractErrorMessage(res));
+  }
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `${campaignId}.db`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+export async function importCampaign(file: File): Promise<CampaignRead> {
+  const formData = new FormData();
+  formData.append("file", file);
+  const res = await fetch(`${BASE_URL}/api/campaigns/import`, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!res.ok) {
+    throw new ApiError(res.status, await extractErrorMessage(res));
+  }
+
+  return (await res.json()) as CampaignRead;
+}

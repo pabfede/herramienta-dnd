@@ -28,12 +28,24 @@
 
 **Q2 Resolution - Encounter Generator Rules:** Start with **generic/pluggable** (pick from lists of NPCs/monsters, no hardcoded D&D 5e). Aligns with CLAUDE.md "rules agnostic" and Ponytail approach.
 
-### Phase 3 (Planned)
-- [ ] Planner scope
-- [ ] Builder implementation
-- [ ] Reviewer audit
-- [ ] Verifier tests
-- [ ] Commit and push
+### Phase 3 ✅ COMPLETE
+- [x] Encounter Generator & Combat System
+
+### Phase 4 ✅ COMPLETE
+- [x] Lore & Worldbuilding Tools
+
+### Phase 5 (In Progress) — Export/Import MVP
+**Scope (minimal):** export campaigns as .db files, import .db files as new campaigns. Skips service worker, desktop app, public release (future/not Phase 5 priority).
+
+**Why:** Campaigns are already portable .db files; export/import makes them shareable without backend dependency.
+
+**Tasks:**
+- [ ] Backend: `GET /api/campaigns/{id}/export` → download .db file
+- [ ] Backend: `POST /api/campaigns/import` + multipart → upload .db, validate, register as new campaign
+- [ ] Frontend: Export button on campaign detail view
+- [ ] Frontend: Import button on campaign list (file picker)
+- [ ] Test: export then import, verify data intact
+- [ ] Commit Phase 5 MVP
 
 ---
 

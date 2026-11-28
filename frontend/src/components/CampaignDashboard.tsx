@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { request } from "@/api/client";
+import { request, exportCampaign } from "@/api/client";
 import type { CampaignRead } from "@/api/client";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,10 +14,25 @@ interface CampaignDashboardProps {
 }
 
 export function CampaignDashboard({ campaignId, onChangeCampaign }: CampaignDashboardProps) {
+  const [isExporting, setIsExporting] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
+
   const campaign = useQuery({
     queryKey: ["campaigns", campaignId],
     queryFn: () => request<CampaignRead>(`/api/campaigns/${campaignId}`),
   });
+
+  const handleExport = async () => {
+    setIsExporting(true);
+    setExportError(null);
+    try {
+      await exportCampaign(campaignId);
+    } catch (err) {
+      setExportError(err instanceof Error ? err.message : "Export failed");
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 p-4">
@@ -28,10 +44,23 @@ export function CampaignDashboard({ campaignId, onChangeCampaign }: CampaignDash
               ? campaign.data.name
               : "Loading..."}
         </h1>
-        <Button variant="outline" onClick={onChangeCampaign}>
-          Change campaign
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={handleExport}
+            disabled={isExporting}
+          >
+            {isExporting ? "Exporting..." : "Export"}
+          </Button>
+          <Button variant="outline" onClick={onChangeCampaign}>
+            Change campaign
+          </Button>
+        </div>
       </div>
+
+      {exportError && (
+        <p className="text-destructive">Export failed: {exportError}</p>
+      )}
 
       {campaign.isError && (
         <div className="flex items-center gap-2">

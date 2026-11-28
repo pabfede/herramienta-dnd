@@ -1,4 +1,5 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, File, UploadFile
+from fastapi.responses import FileResponse
 
 from app.errors import CampaignNotFoundError
 from app.schemas.campaign import CampaignCreate, CampaignRead, CampaignUpdate
@@ -33,3 +34,18 @@ def update_campaign(campaign_id: str, data: CampaignUpdate) -> CampaignRead:
 @router.delete("/{campaign_id}", status_code=204)
 def delete_campaign(campaign_id: str) -> None:
     campaign_service.delete_campaign(campaign_id)
+
+
+@router.get("/{campaign_id}/export")
+def export_campaign(campaign_id: str):
+    path = campaign_service.export_campaign(campaign_id)
+    return FileResponse(
+        path=path,
+        filename=f"{campaign_id}.db",
+        media_type="application/octet-stream",
+    )
+
+
+@router.post("/import", response_model=CampaignRead, status_code=201)
+async def import_campaign(file: UploadFile = File(...)) -> CampaignRead:
+    return await campaign_service.import_campaign(file)
